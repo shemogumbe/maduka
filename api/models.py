@@ -10,8 +10,7 @@ class Category(Base, Utility):
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
     description = Column(String, nullable=True)
-    products = relationship('Product', cascade="all, delete-orphan")
-
+    products = relationship('Product', cascade="all, delete-orphan")    
 
 class Product(Base, Utility):
     __tablename__ = "products"
