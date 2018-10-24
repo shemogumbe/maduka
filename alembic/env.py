@@ -25,7 +25,7 @@ sys.path.append(os.getcwd())
 config.set_main_option('sqlalchemy.url', os.getenv('DEV_DATABASE_URL'))
 
 from helpers.database import Base
-from api.models import Company
+from api.models import Category, Product
 
 
 target_metadata = Base.metadata
