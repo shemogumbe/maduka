@@ -6,7 +6,6 @@ from .models import (
 
 from graphql import GraphQLError
 
-from helpers.paginate import Paginate
 
 class Category(SQLAlchemyObjectType):
     class Meta:
@@ -19,6 +18,7 @@ class Product(SQLAlchemyObjectType):
 class CreateCategory(graphene.Mutation):
     
     class Arguments:
+
         name = graphene.String(required=True)
         description= graphene.String(required=True)
 
@@ -26,6 +26,7 @@ class CreateCategory(graphene.Mutation):
 
     def mutate(self, info, **kwargs):
         category = CategoryModel(**kwargs)
+        category.save()
         return CreateCategory(category=category)
 
 class UpdateCategory(graphene.Mutation):
@@ -68,13 +69,14 @@ class CreateProduct(graphene.Mutation):
     class Arguments:
         name = graphene.String(required=True)
         description= graphene.String()
-        display_image = graphene.String()
+        image = graphene.String()
         price = graphene.Int()
         category_id = graphene.Int()
     product = graphene.Field(Product)
 
     def mutate(self, info, **kwargs):
         product = ProductModel(**kwargs)
+        product.save()
         return CreateProduct(product=product)
 
 class UpdateProduct(graphene.Mutation):
@@ -114,17 +116,29 @@ class DeleteProduct(graphene.Mutation):
 
 
 class Query(graphene.ObjectType):
-    cateries = graphene.List(Category)
+    categories = graphene.List(Category)
     products = graphene.List(Product)
+    get_product_by_name = graphene.List(Product,
+        name=graphene.String())
 
     def resolve_categories(self, info):
         results = Category.get_query(info)
         return results.all()
-    
     def resolve_products(self, info):
         results = Product.get_query(info)
         return results.all()
 
+    def resolve_get_product_by_name(self, info, name):
+        query = Product.get_query(info)
+        if name == "":
+            raise GraphQLError("Please supply a Product Name")
+        product = list(query.filter(ProductModel.name.ilike("%" + name + "%")).all())
+        if not product:
+            raise GraphQLError("Product not found")
+        return product
+
+
+    
 class Mutation(graphene.ObjectType):
     create_category = CreateCategory.Field()
     update_category = UpdateCategory.Field()

@@ -1,3 +1,4 @@
+alembic==1.0.1
 aniso8601==3.0.0
 click==6.7
 Flask==1.0.2
@@ -11,9 +12,12 @@ graphql-relay==0.4.5
 iso8601==0.1.12
 itsdangerous==0.24
 Jinja2==2.10
+Mako==1.0.7
 MarkupSafe==1.0
 promise==2.2.1
 psycopg2==2.7.5
+python-dateutil==2.7.3
+python-editor==1.0.3
 Rx==1.6.1
 singledispatch==3.4.0.3
 six==1.11.0

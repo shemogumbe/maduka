@@ -17,6 +17,6 @@ class Product(Base, Utility):
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
     description = Column(String, nullable=False)
-    desplay_image = Column(String, nullable=False)
+    image = Column(String, nullable=False)
     category_id = Column(Integer, ForeignKey('categories.id'))
     price = Column(Integer, nullable=False)
